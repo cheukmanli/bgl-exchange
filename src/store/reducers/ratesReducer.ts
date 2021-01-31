@@ -44,7 +44,6 @@ const ratesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchLatestRates.fulfilled, (state, action) => {
       const fetchedRates = action.payload;
-      console.log(fetchedRates);
       Object.keys(fetchedRates).map((currency: any) => {
         let fetchedPrice = parseFloat(fetchedRates[currency].last);
         if (AVAILABLE_CURRENCIES.includes(currency)) {
