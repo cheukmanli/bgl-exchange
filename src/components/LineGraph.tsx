@@ -48,7 +48,7 @@ export default function LineGraph(props: LineGraphProps) {
 
     data = {
       labels: historicPrices.map((price) =>
-        dayjs(price.timestamp).format("M-D H:m")
+        dayjs(price.timestamp).format("M-D HH:mm")
       ),
       datasets: [
         {
