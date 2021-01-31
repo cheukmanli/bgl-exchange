@@ -43,7 +43,7 @@ export default function LineGraph(props: LineGraphProps) {
     return response.data.rates;
   };
   let data;
-  if (props.currency) {
+  if (props.currency && historicPrices) {
     //const historicalData = fetchHistorical() as Object;
 
     data = {

@@ -9,7 +9,7 @@ import LatestPrice from "./latestPrice";
 import AveragePrice from "./averagePrice";
 import HistoricPrice from "./historicPrice";
 import { fetchLatestRates } from "../store/reducers/ratesReducer";
-import { useDispatch } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import LinkTab from "../components/LinkTab";
 import TabPanel from "../components/TabPanel";
 
@@ -24,6 +24,10 @@ export default function MainPage() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
+  const ratesStatus = useSelector(
+    (state: RootStateOrAny) => state.rates.status
+  );
+  const ratesError = useSelector((state: RootStateOrAny) => state.rates.error);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,6 +58,7 @@ export default function MainPage() {
       <TabPanel value={value} index={2}>
         <AveragePrice />
       </TabPanel>
+      {ratesStatus === "failed" && alert(ratesError)}
     </div>
   );
 }

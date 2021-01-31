@@ -78,6 +78,10 @@ const ratesSlice = createSlice({
         state.status = "succeeded";
       });
     });
+    builder.addCase(fetchLatestRates.rejected, (state, action) => {
+      state.error = Error(action.error.message);
+      state.status = "failed";
+    });
   },
 });
 
