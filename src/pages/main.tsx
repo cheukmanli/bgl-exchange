@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -6,56 +6,12 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import LatestPrice from "./latestPrice";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`nav-tabpanel-${index}`}
-      aria-labelledby={`nav-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: any) {
-  return {
-    id: `nav-tab-${index}`,
-    "aria-controls": `nav-tabpanel-${index}`,
-  };
-}
-
-interface LinkTabProps {
-  label?: string;
-  href?: string;
-}
-
-function LinkTab(props: LinkTabProps) {
-  return (
-    <Tab
-      component="a"
-      onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        event.preventDefault();
-      }}
-      {...props}
-    />
-  );
-}
+import AveragePrice from "./averagePrice";
+import HistoricPrice from "./historicPrice";
+import { fetchLatestRates } from "../store/reducers/ratesReducer";
+import { useDispatch } from "react-redux";
+import LinkTab from "../components/LinkTab";
+import TabPanel from "../components/TabPanel";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -64,9 +20,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function NavTabs() {
+export default function MainPage() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(fetchLatestRates());
+    }, 1000 * 60);
+    return () => clearInterval(interval);
+  }, [dispatch]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -75,25 +39,20 @@ export default function NavTabs() {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Tabs
-          variant="fullWidth"
-          value={value}
-          onChange={handleChange}
-          aria-label="nav tabs example"
-        >
-          <LinkTab label="Latest Price" href="/drafts" {...a11yProps(0)} />
-          <LinkTab label="Historic price" href="/trash" {...a11yProps(1)} />
-          <LinkTab label="Average price" href="/spam" {...a11yProps(2)} />
+        <Tabs variant="fullWidth" value={value} onChange={handleChange}>
+          <LinkTab label="Latest Price" href="/prices" />
+          <LinkTab label="Historic price" href="/historic" />
+          <LinkTab label="Average price" href="/average" />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <LatestPrice />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Page Two
+        <HistoricPrice />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Page Three
+        <AveragePrice />
       </TabPanel>
     </div>
   );
