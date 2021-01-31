@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
       marginLeft: 40,
       marginTop: 20,
+      marginBottom: 30,
       minWidth: "60%",
     },
   })
