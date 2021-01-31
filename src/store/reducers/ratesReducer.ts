@@ -21,13 +21,7 @@ export const fetchLatestRates = createAsyncThunk(
   }
 );
 
-const getLatestPrice = (rates: Price[]) => {
-  return rates.reduce((prev, curr) => {
-    return prev.timestamp > curr.timestamp ? prev : curr;
-  });
-};
-
-const getPriceMovement = (prevPrice: number, newPrice: number) => {
+export const getPriceMovement = (prevPrice: number, newPrice: number) => {
   if (prevPrice > newPrice) {
     return "down";
   } else if (prevPrice < newPrice) {
@@ -74,7 +68,6 @@ const ratesSlice = createSlice({
             latest: priceObject,
           };
         }
-
         state.status = "succeeded";
       });
     });
