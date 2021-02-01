@@ -28,6 +28,14 @@ https://bgl-exchange-rates.herokuapp.com/
 
 - Select time range in "From:" and "To:" date time-picker
 - "From" date time must not be greater than "To" date time
+- All timestamps are converted to ISO format when doing comparison/calculations
+
+#### Currencies:
+
+- Available currencies include the top 10 common ones:
+
+- `["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "HKD", "NZD",]`
+- Currencies can be easily configured in `/src/config/currencies.ts`
 
 ## Design Decisions
 
