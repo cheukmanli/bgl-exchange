@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import dayjs from "dayjs";
-import { AVAILABLE_CURRENCIES } from "../../constants/currencies";
-import { ExchangeRate, Price, RatesState } from "../rates/types";
+import { AVAILABLE_CURRENCIES } from "../../config/currencies";
+import { RatesState } from "../rates/types";
 
 const initialState: RatesState = {
   currencies: {},
@@ -14,9 +14,6 @@ export const fetchLatestRates = createAsyncThunk(
   "rates/fetchLatestRates",
   async () => {
     const response = await axios.get("https://blockchain.info/ticker");
-    //const response = await axios.get("https://api.exchangerate.host/latest", {
-    //   params: { base: "BTC", symbols: AVAILABLE_CURRENCIES.join(",") },
-    // });
     return response.data;
   }
 );
